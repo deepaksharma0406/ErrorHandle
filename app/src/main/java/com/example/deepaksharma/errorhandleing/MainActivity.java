@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 
 import com.example.library.TAErrorHandler;
 
+import java.io.FileInputStream;
+
 public class MainActivity extends AppCompatActivity {
     LinearLayout linearLayout;
 
@@ -18,12 +20,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void expHandleToast(View v) {
-        TAErrorHandler.handler(MainActivity.this,  "Error");
+        try {
+            FileInputStream fis = null;
+            fis = new FileInputStream("B:/myfile.txt");
+            int k;
+            while ((k = fis.read()) != -1) {
+                System.out.print((char) k);
+            }
+            fis.close();
+        } catch (Exception exp) {
+            TAErrorHandler.handler(MainActivity.this, exp.getMessage());
+        }
     }
 
     public void expHandleSnackbar(View v) {
-        TAErrorHandler.handler(linearLayout,  "Error");
+        TAErrorHandler.handler(linearLayout, "Snackbar Exception");
     }
 
-
+    public boolean valid() {
+        return Boolean.parseBoolean(null);
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.library;
+package com.example.library.permission;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,33 +10,35 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
-public class Permissions extends Activity {
+import com.example.library.interfaces.PermissionListener;
+
+public class PermissionActivity extends Activity {
     private static final int MY_PERMISSIONS_REQUEST = 1;
-    static String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    static Activity mActivity;
+    public static String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static Activity mActivity;
+    public static PermissionListener mPermissionListener;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkPermission(Permissions.this);
-
-
+        checkPermission(PermissionActivity.this);
     }
-    public static void checkPermission(Activity context) {
-        mActivity = context;
+
+    public void checkPermission(Activity activity) {
+        mActivity = activity;
         if (Build.VERSION.SDK_INT >= 23)
             permissions();
-//            mPermissionListener.onAccept();
     }
 
-    public static void permissions() {
+    public void permissions() {
         if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // Check Permissions Now
+            // Check PermissionActivity Now
             ActivityCompat.requestPermissions(mActivity,
                     permissions,
                     MY_PERMISSIONS_REQUEST);
         } else {
-//            mPermissionListener.onAccept();
-//            tabViewModel.setupViewPager(getSupportFragmentManager(), binding.viewpager);
+            mPermissionListener.onAccepted();
+            this.finish();
         }
     }
 
@@ -45,8 +47,10 @@ public class Permissions extends Activity {
             case MY_PERMISSIONS_REQUEST: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mPermissionListener.onAccepted();
+                    finish();
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Permissions.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PermissionActivity.this);
                     builder.setTitle("Need Permission");
                     builder.setMessage("This app needs permission");
                     builder.setCancelable(false);
@@ -54,13 +58,27 @@ public class Permissions extends Activity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            ActivityCompat.requestPermissions(Permissions.this, permissions, MY_PERMISSIONS_REQUEST);
+                            ActivityCompat.requestPermissions(PermissionActivity.this, permissions, MY_PERMISSIONS_REQUEST);
                         }
                     });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+//                            ActivityCompat.requestPermissions(PermissionActivity.this, permissions, MY_PERMISSIONS_REQUEST);
+                            mPermissionListener.onDenied();
+                            finish();
+                        }
+                    });
+
                     builder.show();
                 }
                 return;
             }
         }
+    }
+
+    public static void checkListener(PermissionListener permissionListener) {
+        mPermissionListener = permissionListener;
     }
 }
