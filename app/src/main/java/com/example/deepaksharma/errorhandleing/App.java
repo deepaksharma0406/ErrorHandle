@@ -10,6 +10,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        TAErrorHandler.AlertType(null, null);
+        TAErrorHandler.AlertType(AlertType.POP_UP, ErrorEnable.ENABLE);
     }
 }

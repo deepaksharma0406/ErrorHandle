@@ -25,7 +25,6 @@ public class Permissions extends Activity {
         mActivity = context;
         if (Build.VERSION.SDK_INT >= 23)
             permissions();
-
 //            mPermissionListener.onAccept();
     }
 

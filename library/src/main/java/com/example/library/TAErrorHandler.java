@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -11,8 +12,8 @@ import android.view.View;
 import android.widget.Toast;
 
 public class TAErrorHandler {
-    private static final @NonNull ErrorEnable mErrorEnable;
-    private static final @NonNull AlertType mAlertType;
+    public static @NonNull ErrorEnable mErrorEnable;
+    public static @NonNull AlertType mAlertType;
 
     public static void AlertType(@NonNull AlertType alertType, @NonNull ErrorEnable errorEnable) {
         mAlertType = alertType;
