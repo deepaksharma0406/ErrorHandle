@@ -18,15 +18,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void expHandleToast(View v) {
-        TAErrorHandler.AlertType(MainActivity.this, getResources().getString(R.string.TOAST), "Error", null);
+        TAErrorHandler.handler(MainActivity.this,  "Error");
     }
 
     public void expHandleSnackbar(View v) {
-        TAErrorHandler.AlertType(MainActivity.this, getResources().getString(R.string.SNACKBAR), "SNACKBAR Error", linearLayout);
+        TAErrorHandler.handler(linearLayout,  "Error");
     }
 
-    public void expHandlePopUp(View v) {
-        TAErrorHandler.AlertType(MainActivity.this, getResources().getString(R.string.POP_UP), "POP_UP Error", null);
-    }
 
 }

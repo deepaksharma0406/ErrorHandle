@@ -6,23 +6,36 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 public class TAErrorHandler {
-   
-    public static void AlertType(@NonNull Activity activity,@NonNull String strAlertType, @NonNull String exceptionMsg, @NonNull View view) {
-        if (strAlertType.equals(activity.getResources().getString(R.string.TOAST))) {
-            Toast.makeText(activity, exceptionMsg, Toast.LENGTH_SHORT).show();
-        } else if (strAlertType.equals(activity.getResources().getString(R.string.POP_UP))) {
-            alertDialog(activity, exceptionMsg);
-        } else if (strAlertType.equals(activity.getResources().getString(R.string.SNACKBAR))) {
-            if (view != null) {
-                Snackbar.make(view, exceptionMsg, Snackbar.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(activity, activity.getResources().getString(R.string.SNACKBAR_ERROR), Toast.LENGTH_SHORT).show();
-            }
+    private static final @NonNull ErrorEnable mErrorEnable;
+    private static final @NonNull AlertType mAlertType;
 
+    public static void AlertType(@NonNull AlertType alertType, @NonNull ErrorEnable errorEnable) {
+        mAlertType = alertType;
+        mErrorEnable = errorEnable;
+    }
+
+    public static void handler(@NonNull Activity activity, @NonNull String exceptionMsg) {
+        if (mErrorEnable!=null && mErrorEnable.equals(ErrorEnable.ENABLE)) {
+            if (mAlertType!=null && mAlertType.equals(AlertType.TOAST)) {
+                Toast.makeText(activity, exceptionMsg, Toast.LENGTH_SHORT).show();
+            } else if (mAlertType!=null && mAlertType.equals(AlertType.POP_UP)) {
+                alertDialog(activity, exceptionMsg);
+            }
+        }
+    }
+
+    public static void handler(@NonNull View view, @NonNull String exceptionMsg) {
+        if (mErrorEnable!=null && mErrorEnable.equals(ErrorEnable.ENABLE)) {
+            if (mAlertType!=null && mAlertType.equals(AlertType.SNACKBAR)) {
+                if (view != null) {
+                    Snackbar.make(view, exceptionMsg, Snackbar.LENGTH_LONG).show();
+                }
+            }
         }
     }
 
@@ -41,4 +54,6 @@ public class TAErrorHandler {
                 });
         builder.show();
     }
+
+
 }

@@ -21,11 +21,4 @@
         android:onClick="expHandleSnackbar"
         android:text="SNACKBAR Handle"
         tools:ignore="OnClick" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="expHandlePopUp"
-        android:text="POP UP Handle"
-        tools:ignore="OnClick" />
 </LinearLayout>
