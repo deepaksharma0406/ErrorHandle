@@ -29,12 +29,16 @@ public class MainActivity extends AppCompatActivity {
             }
             fis.close();
         } catch (Exception exp) {
-            TAErrorHandler.handler(MainActivity.this, exp.getMessage());
+            TAErrorHandler.handler(MainActivity.this, exp);
         }
     }
 
     public void expHandleSnackbar(View v) {
-        TAErrorHandler.handler(linearLayout, "Snackbar Exception");
+        try {
+            int deep = 25/0;
+        }catch (ArithmeticException exp) {
+            TAErrorHandler.handler(MainActivity.this, exp);
+        }
     }
 
     public boolean valid() {

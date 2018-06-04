@@ -21,13 +21,8 @@ public class PermissionActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkPermission(PermissionActivity.this);
-    }
-
-    public void checkPermission(Activity activity) {
-        mActivity = activity;
-        if (Build.VERSION.SDK_INT >= 23)
-            permissions();
+        mActivity = PermissionActivity.this;
+        permissions();
     }
 
     public void permissions() {

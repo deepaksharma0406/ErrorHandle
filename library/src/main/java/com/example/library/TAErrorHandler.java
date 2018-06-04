@@ -33,33 +33,36 @@ public class TAErrorHandler implements PermissionListener {
 //        mErrorEnable = errorEnable;
     }
 
-    public static void handler(@NonNull Context context, @NonNull String exceptionMsg) {
-        strException = exceptionMsg;
+    //    Toast & PopUp Type Alert
+    public static void handler(@NonNull Context context, @NonNull Exception exception) {
+        String expMsg = exception.getMessage();
         if (context != null && appContext != null) {
 //        if (mErrorEnable != null && mErrorEnable.equals(ErrorEnable.ENABLE)) {
             if (mAlertType != null && mAlertType.equals(AlertType.TOAST)) {
-                writeFile(context, exceptionMsg);
-                Toast.makeText(context, exceptionMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, expMsg, Toast.LENGTH_SHORT).show();
             } else if (mAlertType != null && mAlertType.equals(AlertType.POP_UP)) {
-                writeFile(context, exceptionMsg);
-                alertDialog(context, exceptionMsg);
+                alertDialog(context, expMsg);
             }
+            writeFile(context, expMsg);
         }
     }
 
-    public static void handler(@NonNull View view, @NonNull String exceptionMsg) {
+    //      SNACKBAR Alert
+    public static void handler(@NonNull View view, @NonNull Exception exception) {
+        String expMsg = exception.getMessage();
         if (appContext != null) {
 //        if (mErrorEnable != null && mErrorEnable.equals(ErrorEnable.ENABLE)) {
             if (mAlertType != null && mAlertType.equals(AlertType.SNACKBAR)) {
                 if (view != null) {
 //                    logToFile(exceptionMsg);
-                    FileWrite.writeFile(appContext, exceptionMsg);
-                    Snackbar.make(view, exceptionMsg, Snackbar.LENGTH_LONG).show();
+                    FileWrite.writeFile(appContext, expMsg);
+                    Snackbar.make(view, expMsg, Snackbar.LENGTH_LONG).show();
                 }
             }
         }
     }
 
+    //      POP_UP Alert Dialog
     private static void alertDialog(Context context, String exceptionMsg) {
         AlertDialog builder = new AlertDialog.Builder(context).create();
         builder.setTitle(context.getResources().getString(R.string.EXP_TITLE));
@@ -81,12 +84,8 @@ public class TAErrorHandler implements PermissionListener {
 
     @Override
     public void onAccepted() {
-        String systemTime = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss").format(System
-                .currentTimeMillis());
-        String strFormateExp = "\n\n==================================" + systemTime + "==================================\n\n"
-                + strException;
         if(strException != null)
-            FileWrite.logFile(appContext, strFormateExp);
+            FileWrite.logFile(appContext, strException);
     }
 
     @Override
@@ -94,6 +93,7 @@ public class TAErrorHandler implements PermissionListener {
 
     }
 
+//    module initialize & check permission.
     public static void init(Context context) {
         appContext = context;
         if(appContext!=null && Build.VERSION.SDK_INT >= 23){
